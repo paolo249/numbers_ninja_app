@@ -1,7 +1,9 @@
 
 // import 'package:english_words/english_words.dart';
 
+import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:numbers_ninja_app/const.dart';
 import 'package:numbers_ninja_app/util/user_button.dart';
@@ -9,6 +11,10 @@ import 'package:provider/provider.dart';
 import 'dart:math';
 
 void main() {
+  FlutterError.onError = (details) {
+    FlutterError.presentError(details);
+    if (kReleaseMode) exit(1);
+  };
   runApp(MyApp());
 }
 
@@ -51,11 +57,11 @@ class MyAppState extends ChangeNotifier {
     return random.nextInt(10);
   }
 
-  // int generateRandomNumber2(){
-  //   return random.nextInt(10);
-  // }
+  int generateRandomNumber2(){
+    return random.nextInt(4) + 1;
+  }
 
-  // var favorites = <WordPair>[];
+
 
 
 }
@@ -138,10 +144,13 @@ class QuizScreen extends StatefulWidget {
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
+  
 }
 
 class _QuizScreenState extends State<QuizScreen> {
   // List of Math Operations
+  int counter = 0;
+
   List<String> mathOperations = [
    '+',
    '-',
@@ -149,34 +158,110 @@ class _QuizScreenState extends State<QuizScreen> {
    '*'
 
   ];
+
+
+ Map<int,String> numToMathOp = {
+    1: '+',
+    2: '-',
+    3: '/',
+    4: '*'
+ };
+
+ 
+
  // answer
   String answer = '';
+
 // user tapped button
 void buttonTapped(String button){
   setState((){
     // max of 1 math operation
-    if(answer.length < 1){
-    answer += button;
+    if(answer.isEmpty){
+    answer = button;
+    counter++;
     }
-  });
+  }
+  
+  );
+  // resetState();
 }
+void resetState(){
+  setState((){
+    answer = '';
+    counter = 0;
+  });
+
+}
+
+// Check user if Correct or Incorrect
+// void checkAnswer(num3Answer(num1, num2, numToChar, valueForKey)){
+//    if(valueForKey == '+'){
+//    }
+//    }
 
   @override
   Widget build(BuildContext context) {
    var appState = context.watch<MyAppState>();
    int num1 = appState.generateRandomNumber1();  
+   int num2 = appState.generateRandomNumber1();
+   int num3 = 0;
+   int numToChar = appState.generateRandomNumber2();
+   // Randomizes the MathOperation based on Key-value pair (+,-,/,*)
+   String valueForKey = numToMathOp[numToChar]!;
+   
+   int num3Answer(num1, num2, numToChar, valueForKey){
+      try{
+
+      if(valueForKey == '+'){
+        num3 = num1 + num2;
+        
+      }
+      else if(valueForKey == '-'){
+        num3 = num1 - num2;
+      }
+      else if(valueForKey == '/'){
+        num3 = num1 / num2;
+    
+      }
+      else if(valueForKey == '*'){
+        num3 = num1 * num2;
+      }
+     }
+      catch(e){
+         print('An exception occurred: $e');
+      }
+
+    
+  
+      // resetState();
+      num3 = num3.toInt();
+      return num3;
+   }
+  //  num3Answer(num1, num2, numToChar, valueForKey);
+
+   String checkAnswer(int index){
+     String name = '';
+    if(valueForKey == mathOperations[index]){
+      name = 'Correct';
+      
+   }
+   return name;
+   }
+
     return MaterialApp(
      
       title: 'Number Ninja: Quiz', 
       home: Scaffold(
+        
         backgroundColor: Color.fromRGBO(242, 229, 196, 1),
         body: Column(
           children: [ 
             // Title
             Container(
             height: 80),
-            const Text('Quiz Screen UIT', style: TextStyle(fontSize: 34, color: Colors.black)),
+            const Text('Quiz Screen', style: TextStyle(fontSize: 34, color: Colors.black)),
             
+            Text("ValueForKey Test: " + valueForKey, style: TextStyle(fontSize: 20, color: Colors.black)),
             // Math Equation - Question
             Expanded(
               child: Center(
@@ -189,10 +274,11 @@ void buttonTapped(String button){
                     // Question
                     
                     Text(
-                       '5',
-                        style: normalTextStyle,
-                        
+                       num1.toString(),
+                       style: normalTextStyle,
                     ),
+
+                    // User Input for Math Operation
                     SizedBox(width: 7),
                     Container(
                       height: 50,
@@ -205,19 +291,19 @@ void buttonTapped(String button){
                     ),
                     SizedBox(width: 7),
                     Text(
-                        '5',
+                        num2.toString() + " = " + num3.toString(),
                          style: normalTextStyle,
                     ),
-                    SizedBox(width: 7),
-                    Text(
-                        '=',
-                         style: normalTextStyle,
-                    ),
-                    SizedBox(width: 7),
-                    Text(
-                        '10',
-                         style: normalTextStyle,
-                    ),
+                    // SizedBox(width: 7),
+                    // Text(
+                    //     '=',
+                    //      style: normalTextStyle,
+                    // ),
+                    // SizedBox(width: 7),                                           
+                    // Text(
+                    //     num3.toString(),
+                    //      style: normalTextStyle,
+                    // ),
 
                     // Answer
                    
@@ -239,7 +325,13 @@ void buttonTapped(String button){
                 itemBuilder: (context, index) {
                   return MyButton(
                     child: mathOperations[index],
-                    onTap: () => buttonTapped(mathOperations[index]),
+                    onTap: () {
+                      buttonTapped(mathOperations[index]);
+                      Navigator.pushReplacement(context, 
+                      MaterialPageRoute(builder: (_) => QuizScreen()),
+                      );
+                    },
+                    
                     );
                 }),
               ),
