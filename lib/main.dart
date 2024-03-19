@@ -4,7 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:numbers_ninja_app/const.dart';
-import 'package:numbers_ninja_app/util/key_pad.dart';
+import 'package:numbers_ninja_app/util/user_button.dart';
 import 'package:provider/provider.dart';
 import 'dart:math';
 
@@ -149,6 +149,18 @@ class _QuizScreenState extends State<QuizScreen> {
    '*'
 
   ];
+ // answer
+  String answer = '';
+// user tapped button
+void buttonTapped(String button){
+  setState((){
+    // max of 1 math operation
+    if(answer.length < 1){
+    answer += button;
+    }
+  });
+}
+
   @override
   Widget build(BuildContext context) {
    var appState = context.watch<MyAppState>();
@@ -167,11 +179,50 @@ class _QuizScreenState extends State<QuizScreen> {
             
             // Math Equation - Question
             Expanded(
-              child: Container(
-                child: Center(child: Text(
-                  '3 + 1 = ?',
-                  style: normalTextStyle,
-                  ),
+              child: Center(
+                
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  
+                  // child: Container(
+                  children: [
+                    // Question
+                    
+                    Text(
+                       '5',
+                        style: normalTextStyle,
+                        
+                    ),
+                    SizedBox(width: 7),
+                    Container(
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[500],
+                        borderRadius: BorderRadius.circular(4), 
+                      ),
+                      child: Center(child: Text(answer, style: normalTextStyle)),
+                    ),
+                    SizedBox(width: 7),
+                    Text(
+                        '5',
+                         style: normalTextStyle,
+                    ),
+                    SizedBox(width: 7),
+                    Text(
+                        '=',
+                         style: normalTextStyle,
+                    ),
+                    SizedBox(width: 7),
+                    Text(
+                        '10',
+                         style: normalTextStyle,
+                    ),
+
+                    // Answer
+                   
+                  ],
+                // ),
                 )
               ), 
               ),
@@ -186,7 +237,10 @@ class _QuizScreenState extends State<QuizScreen> {
                     crossAxisCount: 4,
                 ),
                 itemBuilder: (context, index) {
-                  return MyButton(child: mathOperations[index]);
+                  return MyButton(
+                    child: mathOperations[index],
+                    onTap: () => buttonTapped(mathOperations[index]),
+                    );
                 }),
               ),
               ), 
