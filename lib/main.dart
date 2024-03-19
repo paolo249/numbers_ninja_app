@@ -156,17 +156,17 @@ class _QuizScreenState extends State<QuizScreen> {
    '-',
    '/',
    '*',
-   'Confirm'
+  //  'Confirm'
 
   ];
 
 
- Map<int,String> numToMathOp = {
+  Map<int,String> numToMathOp = {
     1: '+',
     2: '-',
     3: '/',
     4: '*',
-    5: 'Confirm'
+    // 5: 'Confirm'
  };
 
  
@@ -188,20 +188,22 @@ class _QuizScreenState extends State<QuizScreen> {
 }
 
 // user tapped button
-// void buttonTapped(String button){
+void buttonTapped(String button){
     
-//   setState((){
-//     // max of 1 math operation
+  setState((){
+    // max of 1 math operation
  
-//     if(answer.isEmpty){
-//     answer = button;
-//     counter++;
-//     }
-//   }
+    if(answer.isEmpty){
+    answer = answer + button;
+    counter++;
+    }
+    
+  }
   
-//   );
-//   // resetState();
-// }
+  );
+
+  // resetState();
+}
 void resetState(){
   setState((){
     answer = '';
@@ -255,7 +257,7 @@ void resetState(){
    num3Answer(num1, num2, numToChar, valueForKey);
 
    void checkAnswer(String button){
-    
+    buttonTapped(button);
       if(valueForKey == button){
       
       showDialog(
@@ -285,9 +287,11 @@ void resetState(){
               ),
           );
       });
-   
-    
+      resetState();
     }
+    // else{
+    //   resetState();
+    // }
   //   if(valueForKey == mathOperations[index]){
       
   //     showDialog(
@@ -321,25 +325,25 @@ void resetState(){
 
    }
 
-  void buttonTapped(String button){
-  // int valueResult = getKeyFromValue(numToMathOp, button);
-  setState((){
-    // max of 1 math operation
-    if(button == "Confirm"){
-      checkAnswer(button);
-    }
-    else if(answer.isNotEmpty){
-    answer = answer.substring(0, answer.length - 1);
-    }
-    else if(answer.length < 1){
-    answer += button;
-    counter++;
-    }
-  }
+//   void buttonTapped(String button){
+//   // int valueResult = getKeyFromValue(numToMathOp, button);
+//   setState((){
+//     // max of 1 math operation
+//     if(button == "Confirm"){
+//       checkAnswer(button);
+//     }
+//     else if(answer.isNotEmpty){
+//     answer = answer.substring(0, answer.length - 1);
+//     }
+//     else if(answer.length < 1){
+//     answer += button;
+//     counter++;
+//     }
+//   }
   
-  );
-  // resetState();
-}
+//   );
+//   // resetState();
+// }
 
 
 
@@ -352,59 +356,49 @@ void resetState(){
         body: Column(
           children: [ 
             // Title
-            Container(
-            height: 80),
+            Container(height: 80),
             Text('Quiz Screen', style: TextStyle(fontSize: 34, color: Colors.black)),
-            
             Text("ValueForKey Test: " + valueForKey, style: TextStyle(fontSize: 20, color: Colors.black)),
+
             // Math Equation - Question
             MathEquation(num1: num1, answer: answer, num2: num2, num3: num3),
+
             // Operation Button
             Expanded(
               flex: 2,
               child: Container(
                 padding: const EdgeInsets.all(4.0),
-                
-         
                 child: GridView.builder(
                   itemCount: mathOperations.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    
-                ),
-                itemBuilder: (context, index) {
-                  return MyButton(
-                    child: mathOperations[index],
-                    onTap: () {
-                      buttonTapped(mathOperations[index]);
-                      // checkAnswer(index);
-                      // Navigator.pushReplacement(context, 
-                      // PageRouteBuilder(pageBuilder: (_, __, ___) => QuizScreen(),
-                      // transitionDuration: Duration(milliseconds: 800),
-                      // transitionsBuilder: (_, animation, __, child){
-                      //   return FadeTransition(
-                      //     opacity: animation,
-                      //     child: child,
-                      //   );
-                      // },
-                      // ),
-                      // ); // Navigator
-                    },
-                    
+                    crossAxisCount: 4,
+                  ),
+                  itemBuilder: (context, index) {
+                    return MyButton(
+                      child: mathOperations[index],
+                      onTap: () {
+                        buttonTapped(mathOperations[index]); 
+                        checkAnswer(mathOperations[index]);
+                      Navigator.pushReplacement(context, 
+                      PageRouteBuilder(pageBuilder: (_, __, ___) => QuizScreen(),
+                      transitionDuration: Duration(milliseconds: 800),
+                      transitionsBuilder: (_, animation, __, child){
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                      ),
+                      ); // Navigator
+                      },
                     );
-                }),
+                   }),
               ),
-              ), 
-            ],
-            )
-
+            ), 
+          ],
+        )
       )
-
-
     );
-    
-    
-  
   }
 }
 
