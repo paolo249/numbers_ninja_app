@@ -155,7 +155,8 @@ class _QuizScreenState extends State<QuizScreen> {
    '+',
    '-',
    '/',
-   '*'
+   '*',
+   'Confirm'
 
   ];
 
@@ -164,7 +165,8 @@ class _QuizScreenState extends State<QuizScreen> {
     1: '+',
     2: '-',
     3: '/',
-    4: '*'
+    4: '*',
+    5: 'Confirm'
  };
 
  
@@ -172,19 +174,34 @@ class _QuizScreenState extends State<QuizScreen> {
  // answer
   String answer = '';
 
-// user tapped button
-void buttonTapped(String button){
-  setState((){
-    // max of 1 math operation
-    if(answer.isEmpty){
-    answer = button;
-    counter++;
+  // Get key from value using numToMathOp map
+  int getKeyFromValue(Map<int, String> numToMathOp, String value) {
+    
+  for (var entry in numToMathOp.entries) {
+    if (entry.value == value) {
+      return entry.key;
     }
   }
+  return 0;
   
-  );
-  // resetState();
+   // If the value is not found in the map
 }
+
+// user tapped button
+// void buttonTapped(String button){
+    
+//   setState((){
+//     // max of 1 math operation
+ 
+//     if(answer.isEmpty){
+//     answer = button;
+//     counter++;
+//     }
+//   }
+  
+//   );
+//   // resetState();
+// }
 void resetState(){
   setState((){
     answer = '';
@@ -230,23 +247,101 @@ void resetState(){
       catch(e){
          print('An exception occurred: $e');
       }
-
-    
   
       // resetState();
       num3 = num3.toInt();
       return num3;
    }
-  //  num3Answer(num1, num2, numToChar, valueForKey);
+   num3Answer(num1, num2, numToChar, valueForKey);
 
-   String checkAnswer(int index){
-     String name = '';
-    if(valueForKey == mathOperations[index]){
-      name = 'Correct';
+   void checkAnswer(String button){
+    
+      if(valueForKey == button){
       
+      showDialog(
+        context: context, 
+        builder: (context) {
+          return AlertDialog(
+            content: Container(
+              height: 200,
+              color: Colors.deepPurple,
+              child: Column(
+                children: [
+                  Text('Correct!',
+                  style: normalTextStyle),
+                  Container(
+                  decoration: BoxDecoration(color: Colors.deepPurple[300]),
+                  child: Center(
+                    child: Icon(
+                      Icons.arrow_forward,
+                      color: Colors.white,
+                    ),
+                    ),
+                  ),
+                ],
+             
+                
+                ),
+              ),
+          );
+      });
+   
+    
+    }
+  //   if(valueForKey == mathOperations[index]){
+      
+  //     showDialog(
+  //       context: context, 
+  //       builder: (context) {
+  //         return AlertDialog(
+  //           content: Container(
+  //             height: 200,
+  //             color: Colors.deepPurple,
+  //             child: Column(
+  //               children: [
+  //                 Text('Correct!',
+  //                 style: normalTextStyle),
+  //                 Container(
+  //                 decoration: BoxDecoration(color: Colors.deepPurple[300]),
+  //                 child: Center(
+  //                   child: Icon(
+  //                     Icons.arrow_forward,
+  //                     color: Colors.white,
+  //                   ),
+  //                   ),
+  //                 ),
+  //               ],
+             
+                
+  //               ),
+  //             ),
+  //         );
+  //     });
+  //  }
+
    }
-   return name;
-   }
+
+  void buttonTapped(String button){
+  // int valueResult = getKeyFromValue(numToMathOp, button);
+  setState((){
+    // max of 1 math operation
+    if(button == "Confirm"){
+      checkAnswer(button);
+    }
+    else if(answer.isNotEmpty){
+    answer = answer.substring(0, answer.length - 1);
+    }
+    else if(answer.length < 1){
+    answer += button;
+    counter++;
+    }
+  }
+  
+  );
+  // resetState();
+}
+
+
 
     return MaterialApp(
      
@@ -259,77 +354,41 @@ void resetState(){
             // Title
             Container(
             height: 80),
-            const Text('Quiz Screen', style: TextStyle(fontSize: 34, color: Colors.black)),
+            Text('Quiz Screen', style: TextStyle(fontSize: 34, color: Colors.black)),
             
             Text("ValueForKey Test: " + valueForKey, style: TextStyle(fontSize: 20, color: Colors.black)),
             // Math Equation - Question
-            Expanded(
-              child: Center(
-                
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  
-                  // child: Container(
-                  children: [
-                    // Question
-                    
-                    Text(
-                       num1.toString(),
-                       style: normalTextStyle,
-                    ),
-
-                    // User Input for Math Operation
-                    SizedBox(width: 7),
-                    Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[500],
-                        borderRadius: BorderRadius.circular(4), 
-                      ),
-                      child: Center(child: Text(answer, style: normalTextStyle)),
-                    ),
-                    SizedBox(width: 7),
-                    Text(
-                        num2.toString() + " = " + num3.toString(),
-                         style: normalTextStyle,
-                    ),
-                    // SizedBox(width: 7),
-                    // Text(
-                    //     '=',
-                    //      style: normalTextStyle,
-                    // ),
-                    // SizedBox(width: 7),                                           
-                    // Text(
-                    //     num3.toString(),
-                    //      style: normalTextStyle,
-                    // ),
-
-                    // Answer
-                   
-                  ],
-                // ),
-                )
-              ), 
-              ),
+            MathEquation(num1: num1, answer: answer, num2: num2, num3: num3),
             // Operation Button
             Expanded(
               flex: 2,
-              child: Padding(
+              child: Container(
                 padding: const EdgeInsets.all(4.0),
+                
+         
                 child: GridView.builder(
                   itemCount: mathOperations.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
+                    crossAxisCount: 3,
+                    
                 ),
                 itemBuilder: (context, index) {
                   return MyButton(
                     child: mathOperations[index],
                     onTap: () {
                       buttonTapped(mathOperations[index]);
-                      Navigator.pushReplacement(context, 
-                      MaterialPageRoute(builder: (_) => QuizScreen()),
-                      );
+                      // checkAnswer(index);
+                      // Navigator.pushReplacement(context, 
+                      // PageRouteBuilder(pageBuilder: (_, __, ___) => QuizScreen(),
+                      // transitionDuration: Duration(milliseconds: 800),
+                      // transitionsBuilder: (_, animation, __, child){
+                      //   return FadeTransition(
+                      //     opacity: animation,
+                      //     child: child,
+                      //   );
+                      // },
+                      // ),
+                      // ); // Navigator
                     },
                     
                     );
@@ -346,6 +405,62 @@ void resetState(){
     
     
   
+  }
+}
+
+class MathEquation extends StatelessWidget {
+  const MathEquation({
+    super.key,
+    required this.num1,
+    required this.answer,
+    required this.num2,
+    required this.num3,
+  });
+
+  final int num1;
+  final String answer;
+  final int num2;
+  final int num3;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // First element of Math Operation
+            Text(
+               num1.toString(),
+               style: normalTextStyle,
+            ),
+  
+            SizedBox(width: 7),
+
+            // User Input for Math Operation (Grey Box)
+            Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                color: Colors.grey[500],
+                borderRadius: BorderRadius.circular(4), 
+              ),
+              child: Center(
+                child: Text(answer, style: normalTextStyle)),
+
+            ),
+            SizedBox(width: 7),
+
+            // Concatenate last three elements of Math Operation
+            Text(
+                num2.toString() + " = " + num3.toString(),
+                 style: normalTextStyle,
+            ),
+           
+          ],
+        )
+      ), 
+      );
   }
 }
 
