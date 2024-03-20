@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'dart:math';
 
 void main() {
+  // Checks for error before running app
   FlutterError.onError = (details) {
     FlutterError.presentError(details);
     if (kReleaseMode) exit(1);
@@ -20,6 +21,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +103,9 @@ class Menu extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => QuizScreen()),
+                    MaterialPageRoute(
+                      builder: (context) => QuizScreen(),
+                  ),
                   );
                 },
                 child: Container(
@@ -119,38 +123,39 @@ class Menu extends StatelessWidget {
   }
 }
 
-
-class UserCreateScreen extends StatelessWidget {
- const UserCreateScreen({
-    super.key,
-
-  });
-
-  // final WordPair pair;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-
-    );
-  }
-}
-
 // ...
 
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({super.key});
+  // final void Function(int) updateUserScore;
 
+ 
+  // const QuizScreen({Key? key, required this.updateUserScore}) : super(key: key);
+
+  const QuizScreen({super.key});
+  
   @override
   State<QuizScreen> createState() => _QuizScreenState();
+
+  
   
 }
+   int userScore = 0;
+
 
 class _QuizScreenState extends State<QuizScreen> {
-  // List of Math Operations
   int counter = 0;
+  // int userScore = 0;
 
+
+    void updateUserScore(){
+    setState((){
+      userScore++;
+    });
+  }
+
+  
+  // List of Math Operations
   List<String> mathOperations = [
    '+',
    '-',
@@ -159,8 +164,6 @@ class _QuizScreenState extends State<QuizScreen> {
   //  'Confirm'
 
   ];
-
-
   Map<int,String> numToMathOp = {
     1: '+',
     2: '-',
@@ -168,11 +171,10 @@ class _QuizScreenState extends State<QuizScreen> {
     4: '*',
     // 5: 'Confirm'
  };
-
  
-
- // answer
+ // User answer from Math Operation buttons
   String answer = '';
+  // int userScore = 0;
 
   // Get key from value using numToMathOp map
   int getKeyFromValue(Map<int, String> numToMathOp, String value) {
@@ -187,10 +189,9 @@ class _QuizScreenState extends State<QuizScreen> {
    // If the value is not found in the map
 }
 
-// user tapped button
-void buttonTapped(String button){
-    
-  setState((){
+// User taps Math Operation button
+  void buttonTapped(String button){
+    setState((){
     // max of 1 math operation
  
     if(answer.isEmpty){
@@ -204,19 +205,16 @@ void buttonTapped(String button){
 
   // resetState();
 }
-void resetState(){
-  setState((){
-    answer = '';
-    counter = 0;
-  });
 
-}
+// Reset State
+  void resetState(){
+    setState((){
+      answer = '';
+      counter = 0;
+    });
+  }
 
-// Check user if Correct or Incorrect
-// void checkAnswer(num3Answer(num1, num2, numToChar, valueForKey)){
-//    if(valueForKey == '+'){
-//    }
-//    }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -228,6 +226,11 @@ void resetState(){
    // Randomizes the MathOperation based on Key-value pair (+,-,/,*)
    String valueForKey = numToMathOp[numToChar]!;
    
+   
+
+
+
+   // Displays the answer for the math equation on Quiz Screen
    int num3Answer(num1, num2, numToChar, valueForKey){
       try{
 
@@ -239,8 +242,12 @@ void resetState(){
         num3 = num1 - num2;
       }
       else if(valueForKey == '/'){
+        // Checks to see if denominator is greater than 0, so that quotient does not result in infinity (causing error)
+        if(num2 > 0){
         num3 = num1 / num2;
-    
+        }
+        // If num2 <= 0 recall the function
+        else {num3Answer(num1, num2, numToChar, valueForKey);}
       }
       else if(valueForKey == '*'){
         num3 = num1 * num2;
@@ -256,94 +263,34 @@ void resetState(){
    }
    num3Answer(num1, num2, numToChar, valueForKey);
 
-   void checkAnswer(String button){
+   bool checkAnswer(String button){
+    // widget.updateUserScore(userScore);
     buttonTapped(button);
       if(valueForKey == button){
-      
-      showDialog(
-        context: context, 
-        builder: (context) {
-          return AlertDialog(
-            content: Container(
-              height: 200,
-              color: Colors.deepPurple,
-              child: Column(
-                children: [
-                  Text('Correct!',
-                  style: normalTextStyle),
-                  Container(
-                  decoration: BoxDecoration(color: Colors.deepPurple[300]),
-                  child: Center(
-                    child: Icon(
-                      Icons.arrow_forward,
-                      color: Colors.white,
-                    ),
-                    ),
-                  ),
-                ],
-             
-                
+        // userScore++;
+        showDialog(
+          context: context, 
+          builder: (context) {
+            return AlertDialog(
+              content: Container(
+                height: 200,
+                color: const Color.fromARGB(255, 58, 183, 85),
+                child: Column(
+                  children: [
+                    Text('Correct!',
+                    style: normalTextStyle),
+                  ],
                 ),
               ),
           );
       });
-      resetState();
+      // resetState();
+      return true;
+    }else{
+      return false;
     }
-    // else{
-    //   resetState();
-    // }
-  //   if(valueForKey == mathOperations[index]){
-      
-  //     showDialog(
-  //       context: context, 
-  //       builder: (context) {
-  //         return AlertDialog(
-  //           content: Container(
-  //             height: 200,
-  //             color: Colors.deepPurple,
-  //             child: Column(
-  //               children: [
-  //                 Text('Correct!',
-  //                 style: normalTextStyle),
-  //                 Container(
-  //                 decoration: BoxDecoration(color: Colors.deepPurple[300]),
-  //                 child: Center(
-  //                   child: Icon(
-  //                     Icons.arrow_forward,
-  //                     color: Colors.white,
-  //                   ),
-  //                   ),
-  //                 ),
-  //               ],
-             
-                
-  //               ),
-  //             ),
-  //         );
-  //     });
-  //  }
-
    }
 
-//   void buttonTapped(String button){
-//   // int valueResult = getKeyFromValue(numToMathOp, button);
-//   setState((){
-//     // max of 1 math operation
-//     if(button == "Confirm"){
-//       checkAnswer(button);
-//     }
-//     else if(answer.isNotEmpty){
-//     answer = answer.substring(0, answer.length - 1);
-//     }
-//     else if(answer.length < 1){
-//     answer += button;
-//     counter++;
-//     }
-//   }
-  
-//   );
-//   // resetState();
-// }
 
 
 
@@ -358,8 +305,10 @@ void resetState(){
             // Title
             Container(height: 80),
             Text('Quiz Screen', style: TextStyle(fontSize: 34, color: Colors.black)),
-            Text("ValueForKey Test: " + valueForKey, style: TextStyle(fontSize: 20, color: Colors.black)),
-
+            // Uncomment the code line below to display answer on Quiz Scren
+            // Text("ValueForKey Test: " + valueForKey, style: TextStyle(fontSize: 20, color: Colors.black)),
+            // Score Count
+            Text('Score: ' + userScore.toString()),
             // Math Equation - Question
             MathEquation(num1: num1, answer: answer, num2: num2, num3: num3),
 
@@ -378,7 +327,9 @@ void resetState(){
                       child: mathOperations[index],
                       onTap: () {
                         buttonTapped(mathOperations[index]); 
-                        checkAnswer(mathOperations[index]);
+                        bool flag = checkAnswer(mathOperations[index]);
+                        if(flag == true){updateUserScore();}
+                      // Builds new widget QuizScreen
                       Navigator.pushReplacement(context, 
                       PageRouteBuilder(pageBuilder: (_, __, ___) => QuizScreen(),
                       transitionDuration: Duration(milliseconds: 800),
@@ -401,6 +352,12 @@ void resetState(){
     );
   }
 }
+
+
+
+
+
+
 
 class MathEquation extends StatelessWidget {
   const MathEquation({
@@ -458,6 +415,23 @@ class MathEquation extends StatelessWidget {
   }
 }
 
+
+// Icebox item #2
+class UserCreateScreen extends StatelessWidget {
+ const UserCreateScreen({
+    super.key,
+
+  });
+
+  // final WordPair pair;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+
+    );
+  }
+}
 
 class GameOverScreen extends StatelessWidget{
    const GameOverScreen({

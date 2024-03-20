@@ -15,4 +15,8 @@ https://www.figma.com/file/V3Cv3aQA7eEFDqEcYvU6yl/NumberNinja?type=design&node-i
 
 
 # ICEBOX items
-- Add Confirm button on Quiz Screen
+- Add Score counter
+- Add timer
+- Special Case for when + and - are both correct
+- UserCreateScreen
+- GameOverScreen
