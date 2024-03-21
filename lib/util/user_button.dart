@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-
 import '../const.dart';
 
+// ignore: must_be_immutable
 class MyButton extends StatelessWidget {
   final String child;
   final VoidCallback onTap;
   var buttonColor = Colors.red[500];
 
   MyButton({
-    Key? key, 
+    super.key, 
     required this.child,
     required this.onTap,
-    }) : super(key:key);
+    });
 
   @override
   Widget build(BuildContext context) {

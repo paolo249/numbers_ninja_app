@@ -15,8 +15,9 @@ https://www.figma.com/file/V3Cv3aQA7eEFDqEcYvU6yl/NumberNinja?type=design&node-i
 
 
 # ICEBOX items
-- Add Score counter
-- Add timer
+- Add Score counter [COMPLETE]
+- Add Countdown timer
+- Message stating it's wrong
 - Special Case for when + and - are both correct
 - UserCreateScreen
 - GameOverScreen
