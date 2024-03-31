@@ -5,12 +5,16 @@ import '../const.dart';
 class MyButton extends StatelessWidget {
   final String child;
   final VoidCallback onTap;
+  final double width;
+  final double height;
   var buttonColor = Colors.red[500];
 
   MyButton({
     super.key, 
     required this.child,
     required this.onTap,
+    this.width = 100.0, // Default width
+    this.height = 50.0, // Default height
     });
 
   @override

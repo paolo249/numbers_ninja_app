@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:numbers_ninja_app/widgets/quizscreen.dart';
+
 
 class Menu extends StatelessWidget {
   @override
@@ -13,7 +13,7 @@ class Menu extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Title
-          Text(
+          const Text(
             'Number Ninja',
             style:
                 TextStyle(fontSize: 34, color: Color.fromARGB(255, 15, 15, 15)),
@@ -32,7 +32,7 @@ class Menu extends StatelessWidget {
                 );
               },
               child: Container(
-                child: Text(
+                child: const Text(
                   'Start Game',
                   style: TextStyle(color: Colors.black),
                 ),
@@ -45,4 +45,3 @@ class Menu extends StatelessWidget {
   }
 }
 
-// ...

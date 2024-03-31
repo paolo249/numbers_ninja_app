@@ -5,31 +5,33 @@ class MathEquation extends StatelessWidget {
   const MathEquation({
     super.key,
     required this.num1,
-    required this.answer,
+    required this.greyBoxInput,
     required this.num2,
     required this.num3,
   });
 
   final int num1;
-  final String answer;
+  final String greyBoxInput;
   final int num2;
   final int num3;
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      // child: Center(
+        // child: Row(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          
           children: [
             // First element of Math Operation
             Text(
                num1.toString(),
                style: normalTextStyle,
             ),
-  
-            SizedBox(width: 7),
-
+            SizedBox(width: 10),
             // User Input for Math Operation (Grey Box)
             Container(
               height: 50,
@@ -38,12 +40,10 @@ class MathEquation extends StatelessWidget {
                 color: Colors.grey[500],
                 borderRadius: BorderRadius.circular(4), 
               ),
-              child: Center(
-                child: Text(answer, style: normalTextStyle)),
-
+                child: Center(
+                child: Text(greyBoxInput, style: normalTextStyle)),
             ),
-            SizedBox(width: 7),
-
+            SizedBox(width: 10),
             // Concatenate last three elements of Math Operation
             Text(
                 num2.toString() + " = " + num3.toString(),
@@ -51,8 +51,8 @@ class MathEquation extends StatelessWidget {
             ),
            
           ],
-        )
-      ), 
+        // )
+      // ), 
       );
   }
 }
