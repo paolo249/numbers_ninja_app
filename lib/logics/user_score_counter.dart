@@ -69,7 +69,7 @@ class _UserScoreCounter extends State<user_score_counter> {
 
 }
   
-  List <int> num3Answer(num1, num2, num3, numToChar, valueForKey, index, mathOperations) {
+  List <int> mathEqNumbers(num1, num2, num3, numToChar, valueForKey, index, mathOperations) {
     // Randomizes the MathOperation based on Key-value pair (+,-,/,*)
   
     List<int> factors = [];
@@ -146,7 +146,7 @@ class _UserScoreCounter extends State<user_score_counter> {
     numToChar = generateRandomNumber2();
     greyBoxInput = ' ';
     valueForKey = numToMathOp[numToChar]!;  // maps a random key (1-4) to value('+','-','/','*')
-    List<int> math_var = num3Answer(num1, num2, num3, numToChar, valueForKey, index, mathOperations); 
+    List<int> math_var = mathEqNumbers(num1, num2, num3, numToChar, valueForKey, index, mathOperations); 
     num2 = math_var[0]; 
     num3 = math_var[1]; 
   }
@@ -154,7 +154,7 @@ class _UserScoreCounter extends State<user_score_counter> {
   @override
   Widget build(BuildContext context) {  
     bool checkAnswer(String button){
-      List<int> math_var = num3Answer(num1, num2, num3, numToChar, valueForKey, index, mathOperations); 
+      List<int> math_var = mathEqNumbers(num1, num2, num3, numToChar, valueForKey, index, mathOperations); 
       num2 = math_var[0];
       num3 = math_var[1];
       num1 = math_var[2];
@@ -220,7 +220,7 @@ class _UserScoreCounter extends State<user_score_counter> {
               num1 = generateRandomNumber1();  
               numToChar = generateRandomNumber2();
               valueForKey = numToMathOp[numToChar]!;
-              List<int> math_var = num3Answer(num1, num2, num3, numToChar, valueForKey, index, mathOperations);
+              List<int> math_var = mathEqNumbers(num1, num2, num3, numToChar, valueForKey, index, mathOperations);
               num2 = math_var[0];
               num3 = math_var[1];
               print("num2: " + "$num2");
