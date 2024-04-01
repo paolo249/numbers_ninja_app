@@ -2,14 +2,9 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:numbers_ninja_app/widgets/quiz_screen.dart';
-import 'package:numbers_ninja_app/widgets/menu.dart';
-
-// import 'package:numbers_ninja_app/util/user_button.dart';
+import 'package:numbers_ninja_app/widgets/menu_screen.dart';
 
 
-
-//  int userScore = 0;
-//  double _value = 1;
 
 void main() {
   // Checks for error before running app
@@ -46,9 +41,6 @@ class MyApp extends StatelessWidget {
 //   const UserCreateScreen({
 //     super.key,
 //   });
-
-//   // final WordPair pair;
-
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold();

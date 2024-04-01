@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class updateUserScore extends StatelessWidget {
+class show_user_score extends StatelessWidget {
 
-const updateUserScore({
+const show_user_score({
   super.key, 
   required this.userScore,
   });

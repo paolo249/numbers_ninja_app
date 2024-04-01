@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:numbers_ninja_app/const.dart';
+import 'package:numbers_ninja_app/util/const.dart';
 
 class MathEquation extends StatelessWidget {
   const MathEquation({
@@ -19,19 +19,14 @@ class MathEquation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      // child: Center(
-        // child: Row(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          
+      crossAxisAlignment: CrossAxisAlignment.start,     
           children: [
             // First element of Math Operation
             Text(
                num1.toString(),
                style: normalTextStyle,
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             // User Input for Math Operation (Grey Box)
             Container(
               height: 50,
@@ -43,16 +38,13 @@ class MathEquation extends StatelessWidget {
                 child: Center(
                 child: Text(greyBoxInput, style: normalTextStyle)),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             // Concatenate last three elements of Math Operation
             Text(
                 num2.toString() + " = " + num3.toString(),
                  style: normalTextStyle,
             ),
-           
           ],
-        // )
-      // ), 
       );
   }
 }

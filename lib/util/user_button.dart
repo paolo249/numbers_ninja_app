@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../const.dart';
+import 'const.dart';
 
 // ignore: must_be_immutable
 class MyButton extends StatelessWidget {

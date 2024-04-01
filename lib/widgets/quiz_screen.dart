@@ -1,40 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:numbers_ninja_app/logics/UserScoreCounter.dart';
-import 'package:numbers_ninja_app/widgets/quizscreen.dart';
+import 'package:numbers_ninja_app/logics/user_score_counter.dart';
 
 
-class QuizScreenStateless extends StatelessWidget {
-  const QuizScreenStateless({super.key});
+
+class quiz_screen extends StatelessWidget {
+  const quiz_screen({super.key});
 
   @override
   Widget build(BuildContext context) {
-
-    return Column( 
+    return const Column( 
            children: [
-            // Container(height: 10),
-            Text('Quiz Screens', style: TextStyle(fontSize: 34, color: Color.fromARGB(255, 10, 1, 1))),
+            Text('Quiz Screen', style: TextStyle(fontSize: 34, color: Color.fromARGB(255, 10, 1, 1))),
             SizedBox(
-              // padding: EdgeInsets.all(2.0),
               // UserScore
               // Math Operation Equation
               // Operational Buttons
               height: 400, 
               width: 270,
-              child: UserScoreCounter(),
-              )
-           
-              
-            ],
-            
-            
-          
-          );
-  
-    
-   
-  
+              child: user_score_counter(),
+              ) 
+          ],
+        );
   }
 }
 

@@ -26,10 +26,7 @@ class Menu extends StatelessWidget {
             onPressed: () {},
             child: GestureDetector(
               onTap: () {
-                Navigator.pushNamed(
-                  context,
-                  "/quiz",
-                );
+                Navigator.pushNamed(context,"/quiz");
               },
               child: Container(
                 child: const Text(

@@ -17,39 +17,40 @@ class _UserScoreCounter extends State<user_score_counter> {
   int _userScore = 0;
   int counter = 0;
   int numToChar = 0;
-  
- int generateRandomNumber1(){
-    return Random().nextInt(10);
-  }
-
- int generateRandomNumber2(){
-    return Random().nextInt(4) + 1;
-  }
-
+  int index = 0;
   int num1 = 0; 
   int num2 = 0;
   int num3 = 0;
   String valueForKey = '';
-    // User answer from Math Operation buttons
-  String greyBoxInput = ' ';
-
-
+  String greyBoxInput = ' ';  // User answer from Math Operation buttons
+  
   List<String> mathOperations = [
    '+',
    '-',
    '/',
    '*',
-  //  'Confirm'
-
   ];
   Map<int,String> numToMathOp = {
     1: '+',
     2: '-',
     3: '/',
     4: '*',
-    // 5: 'Confirm'
- };
+  };
  
+
+
+
+
+  
+  int generateRandomNumber1(){
+    return Random().nextInt(10);
+  }
+  int generateRandomNumber2(){
+    return Random().nextInt(4) + 1;
+  }
+
+
+
   void _incrementedCounter(){
     setState(() {
       _userScore++;
@@ -66,29 +67,66 @@ class _UserScoreCounter extends State<user_score_counter> {
   
   );
 
-  // resetState();
 }
   
-  int num3Answer(num1, num2, num3, numToChar, valueForKey) {
+  List <int> num3Answer(num1, num2, num3, numToChar, valueForKey, index, mathOperations) {
     // Randomizes the MathOperation based on Key-value pair (+,-,/,*)
+  
+    List<int> factors = [];
     num3 = -1;
+    
     try{
       if(valueForKey == '+'){
-      num3 = num1 + num2;  
+        if(num1 < num2){
+          num3 = num1 + num2; 
+            print("num1: " +  "$num1");
+            print("num2: " +  "$num2");
+            print("num3: " +  "$num3"); 
+          print("$num1 + $num2 = $num3");
+          return [num2, num3, num1];
+        }
+
+        else if(num1 > num2) {
+          num3 = num1 + num2;
+            print("num1: " +  "$num1");
+            print("num2: " +  "$num2");
+            print("num3: " +  "$num3");
+            print("$num1 + $num2 = $num3");
+         return [num2, num3, num1];
+        }
+          
       }
       else if(valueForKey == '-'){
-      num3 = num1 - num2;
+             num3 = num1 - num2;
+            print("$num1 - $num2 = $num3");
+        return [num2, num3, num1];
       }
+
       else if(valueForKey == '/'){
-        // Checks to see if denominator is greater than 0, so that quotient does not result in infinity (causing error)
-      if(num2 > 0){
+        if(num1 == 1 && num2 == 1){
+          num3 = 1;
+          return [num2, num3, num1];
+        }
+        else{
+        for (int i = 1; i <= num1; i++) {
+          if (num1 % i == 0) {
+            factors.add(i);
+            print(factors); // i is a factor of n
+          }
+        }
+        int randFactoridx = Random().nextInt(factors.length); 
+        num2 = factors[randFactoridx];
         num3 = num1 / num2;
+        
+        print("$num1 / $num2 = $num3");
+        return [num2, num3, num1];
+        }
       }
-        // If num2 <= 0 recall the function
-      else {num3Answer(num1, num2, num3, numToChar, valueForKey);}
-      }
+
       else if(valueForKey == '*'){
         num3 = num1 * num2;
+        print("$num1 * $num2 = $num3");
+        return [num2, num3, num1];
       }
      }
     catch(e){
@@ -96,12 +134,9 @@ class _UserScoreCounter extends State<user_score_counter> {
         print('An exception occurred: $e');
       }
     } 
-    num3 = num3.toInt();
-    return num3;  
+    // num3 = num3.toInt();
+    return [num2, num3, num1];
    }
-
-
-
 
   @override
   void initState(){
@@ -110,14 +145,38 @@ class _UserScoreCounter extends State<user_score_counter> {
     num2 = generateRandomNumber1();
     numToChar = generateRandomNumber2();
     greyBoxInput = ' ';
-    valueForKey = numToMathOp[numToChar]!;
-    num3 = num3Answer(num1, num2, num3, numToChar, valueForKey);
+    valueForKey = numToMathOp[numToChar]!;  // maps a random key (1-4) to value('+','-','/','*')
+    List<int> math_var = num3Answer(num1, num2, num3, numToChar, valueForKey, index, mathOperations); 
+    num2 = math_var[0]; 
+    num3 = math_var[1]; 
   }
-
 
   @override
   Widget build(BuildContext context) {  
     bool checkAnswer(String button){
+      List<int> math_var = num3Answer(num1, num2, num3, numToChar, valueForKey, index, mathOperations); 
+      num2 = math_var[0];
+      num3 = math_var[1];
+      num1 = math_var[2];
+      // if(num2 == 1 && num1 == num3){
+      //   if(valueForKey == '/' || valueForKey == '*'){
+      //     if(mathOperations[index] == '/' || mathOperations[index] == '*'){
+      //     showDialog(
+      //       context: context, 
+      //       builder: (context){
+      //       return AlertDialog(
+      //         content: Container(
+      //         height: 200,
+      //         color: const Color.fromARGB(255, 58, 183, 85),
+      //         child: const Column(children: [Text('Correct!')]))
+      //       );
+      //     });
+          
+      //     }
+      //   // else{return false;}
+      //   }
+      //   return true;
+      // }
       if(valueForKey == button){
         showDialog(
           context: context, 
@@ -147,24 +206,27 @@ class _UserScoreCounter extends State<user_score_counter> {
           itemCount: mathOperations.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
           itemBuilder: (context, index) {
+          var mathOperation = mathOperations[index];
           return MyButton(
             // create new variable holding it
-            child: mathOperations[index], 
+            child: mathOperation, 
             onTap: () async {
-              buttonTapped(mathOperations[index]); 
-              bool flag = checkAnswer(mathOperations[index]);
+              buttonTapped(mathOperation); 
+              bool flag = checkAnswer(mathOperation);
               if(flag == true){ 
                 _incrementedCounter(); 
               }
               await Future.delayed(const Duration(milliseconds: 550));
               num1 = generateRandomNumber1();  
-              num2 = generateRandomNumber1();
               numToChar = generateRandomNumber2();
               valueForKey = numToMathOp[numToChar]!;
-              num3 = num3Answer(num1, num2, num3, numToChar, valueForKey);
+              List<int> math_var = num3Answer(num1, num2, num3, numToChar, valueForKey, index, mathOperations);
+              num2 = math_var[0];
+              num3 = math_var[1];
+              print("num2: " + "$num2");
+              print("num3: " + "$num3");
               greyBoxInputMethod();
-              },
-                        
+              },           
           );
           }
           ),
