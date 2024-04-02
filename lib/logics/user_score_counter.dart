@@ -8,7 +8,6 @@ import 'package:numbers_ninja_app/util/user_button.dart';
 class user_score_counter extends StatefulWidget {
   const user_score_counter({super.key});
 
-
   @override
   State<user_score_counter> createState() => _UserScoreCounter();
 }
@@ -76,6 +75,7 @@ class _UserScoreCounter extends State<user_score_counter> {
     num3 = -1;
     
     try{
+
       if(valueForKey == '+'){
         if(num1 < num2){
           num3 = num1 + num2; 
@@ -85,7 +85,6 @@ class _UserScoreCounter extends State<user_score_counter> {
           print("$num1 + $num2 = $num3");
           return [num2, num3, num1];
         }
-
         else if(num1 > num2) {
           num3 = num1 + num2;
             print("num1: " +  "$num1");
@@ -93,12 +92,12 @@ class _UserScoreCounter extends State<user_score_counter> {
             print("num3: " +  "$num3");
             print("$num1 + $num2 = $num3");
          return [num2, num3, num1];
-        }
-          
+        }   
       }
+
       else if(valueForKey == '-'){
-             num3 = num1 - num2;
-            print("$num1 - $num2 = $num3");
+        num3 = num1 - num2;
+        print("$num1 - $num2 = $num3");
         return [num2, num3, num1];
       }
 
@@ -106,6 +105,11 @@ class _UserScoreCounter extends State<user_score_counter> {
         if(num1 == 1 && num2 == 1){
           num3 = 1;
           return [num2, num3, num1];
+        }
+        else if(num1 == 0){
+          num3 = 0;
+          return [num2, num3, num1];
+
         }
         else{
         for (int i = 1; i <= num1; i++) {
@@ -128,6 +132,8 @@ class _UserScoreCounter extends State<user_score_counter> {
         print("$num1 * $num2 = $num3");
         return [num2, num3, num1];
       }
+      // else if( )
+
      }
     catch(e){
       if (kDebugMode) {
@@ -158,32 +164,31 @@ class _UserScoreCounter extends State<user_score_counter> {
       num2 = math_var[0];
       num3 = math_var[1];
       num1 = math_var[2];
-      // if(num2 == 1 && num1 == num3){
-      //   if(valueForKey == '/' || valueForKey == '*'){
-      //     if(mathOperations[index] == '/' || mathOperations[index] == '*'){
-      //     showDialog(
-      //       context: context, 
-      //       builder: (context){
-      //       return AlertDialog(
-      //         content: Container(
-      //         height: 200,
-      //         color: const Color.fromARGB(255, 58, 183, 85),
-      //         child: const Column(children: [Text('Correct!')]))
-      //       );
-      //     });
-          
-      //     }
-      //   // else{return false;}
-      //   }
-      //   return true;
-      // }
-      if(valueForKey == button){
+      // Covers case in which answer can be '/' or '*'
+      if(num2 == 1 && num1 == num3 || num1 == num3 && num1 == 0){
+        if(button == "/" || button == '*'){
         showDialog(
           context: context, 
           builder: (context){
             return AlertDialog(
               content: Container(
-              height: 200,
+              height: 100,
+              color: const Color.fromARGB(255, 58, 183, 85),
+              child: const Column(children: [Text('Correct!')]))
+            );
+          });
+  
+        }
+        return true;
+      }
+     
+      else if(valueForKey == button){
+        showDialog(
+          context: context, 
+          builder: (context){
+            return AlertDialog(
+              content: Container(
+              height: 100,
               color: const Color.fromARGB(255, 58, 183, 85),
               child: const Column(children: [Text('Correct!')]))
             );
@@ -223,8 +228,10 @@ class _UserScoreCounter extends State<user_score_counter> {
               List<int> math_var = mathEqNumbers(num1, num2, num3, numToChar, valueForKey, index, mathOperations);
               num2 = math_var[0];
               num3 = math_var[1];
+              print("num1: " + "$num1");
               print("num2: " + "$num2");
               print("num3: " + "$num3");
+              print("valueForKey: " + valueForKey);
               greyBoxInputMethod();
               },           
           );

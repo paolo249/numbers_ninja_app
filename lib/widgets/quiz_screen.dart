@@ -10,19 +10,24 @@ class quiz_screen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column( 
-           children: [
-            Text('Quiz Screen', style: TextStyle(fontSize: 34, color: Color.fromARGB(255, 10, 1, 1))),
-            SizedBox(
-              // UserScore
-              // Math Operation Equation
-              // Operational Buttons
-              height: 400, 
-              width: 270,
-              child: user_score_counter(),
-              ) 
-          ],
-        );
+    return const Scaffold(
+       body: Center(
+         child: Column( 
+             children: [
+              Text('Quiz Screen', style: TextStyle(fontSize: 34, color: Color.fromARGB(255, 10, 1, 1))),
+              SizedBox(
+                // UserScore
+                // Math Operation Equation
+                // Operational Buttons
+                height: 400, 
+                width: 270,
+                child: user_score_counter(),
+                ) 
+            ],
+          ),
+       ),
+    );
+  
   }
 }
 
